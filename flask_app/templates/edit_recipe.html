@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Recipe</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit your Recipe</h1>
+    <form action="/recipes/edit_in_db/{{ this_recipe.id }}" method="POST">
+        <div>
+            <label>Name:</label>
+            <input type="text" name="name" id="name" value="{{ this_recipe.name }}">
+        </div>
+        <div>
+            <label>Description:</label>
+            <input type="textbox" name="description" id="description" value="{{ this_recipe.description }}">
+        </div>
+        <div>
+            <label>Instructions:</label>
+            <input type="textbox" name="instructions" id="instructions" value="{{ this_recipe.instructions }}">
+        </div>
+        <div>
+            <label>Date Cooked/Made:</label>
+            <input type="date" name="date_created" id="date_created" value="{{ this_recipe.date_created }}">
+        </div>
+        <div>
+            <p>Under 30 min?</p>
+            <label>Yes</label>
+            {% if this_recipe.under_hour == 1 %}
+            <input type="radio" name="under_hour" id="under_hour_yes" value="1" checked>
+            {% else %}
+            <input type="radio" name="under_hour" id="under_hour_yes" value="1">
+            {% endif %}
+            <label>No</label>
+            {% if this_recipe.under_hour == 0 %}
+            <input type="radio" name="under_hour" id="under_hour_no" value="0" checked>
+            {% else %}
+            <input type="radio" name="under_hour" id="under_hour_no" value="0">
+            {% endif %}
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["form"]) %}     <!-- declare a variable called messages -->
+            {% if messages %}                            <!-- check if there are any messages -->
+                {% for message in messages %}            <!-- loop through the messages -->
+                    <p class="error">{{message}}</p>                   <!-- display each message in a paragraph tag -->
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="submit">
+            <input type="submit" value="Edit Recipe" class="offset-btn">
+        </div>
+    </form>
+    <a href="/recipes">Back to Recipes</a>
+    <a href="/logout">Logout</a>
+</body>
+</html>

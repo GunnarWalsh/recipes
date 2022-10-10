@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Welcome</title>
+    <style>
+        .edit_link{
+            padding: 0 10px;
+        }
+        .header{
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ this_user.first_name }}</h2>
+        <div class="header">
+        <a href="/recipes/new">+ Create</a> 
+        <a class="edit_link" href="/logout">Logout</a>
+    </div>
+    <div>
+        <h3>All posted recipes:</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Under 30 min?</th>
+                    <th scope="col">Posted By</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for this_recipe in users_recipes %}
+                    <tr>
+                        <td>{{ this_recipe.name }}</td>
+                        {% if this_recipe.under_hour == 1 %}
+                            <td>Yes</td>
+                        {% else %}
+                            <td>No</td>
+                        {% endif %}
+                        <td>{{ this_recipe.user.first_name }}</td>
+                        <td>
+                            <a href="/recipes/{{ this_recipe.id }}">View Recipe</a>
+                            {% if this_recipe.user.id == session["user_id"] %}
+                            <a class="edit_link" href="/recipes/edit/{{ this_recipe.id }}">Edit Recipe</a>
+                            <a href="/recipes/delete_in_db/{{ this_recipe.id }}">Delete Recipe</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        
+    </div>
+</body>
+</html>
